@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1030" height="306" viewBox="0 0 1030 306">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 75px;
+        font-family: Calibri;
+      }
+
+      .cls-2 {
+        font-size: 125px;
+        font-family: YouYuan;
+      }
+    </style>
+  </defs>
+  <text id="DIGITAL_MEDIA_WORKS_DISPLAY_WEBSITE" data-name="DIGITAL MEDIA WORKS DISPLAY WEBSITE" class="cls-1" x="2" y="201">DIGITAL MEDIA WORKS<tspan x="2" dy="90">DISPLAY WEBSITE</tspan></text>
+  <text id="数媒作品展示网站" class="cls-2" x="3" y="107">数媒作品展示网站</text>
+</svg>

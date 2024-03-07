@@ -1,0 +1,8 @@
+[
+  {
+    "id": "1",
+    "username": "zhangsan",
+    "userProfile": "./src/assets/user/1.png",
+    "password": "123As@"
+  }
+]
