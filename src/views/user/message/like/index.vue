@@ -1,9 +1,14 @@
 <template>
   <div class="like">
-    <el-card v-for="(item, index) in 10" :key="index" shadow="always">
-      <p>用户名</p>
+    <el-card v-for="item in likeData" :key="item.likeId" shadow="always">
+      <p>{{ item.username }}</p>
       <div class="tip">
-        <span>点赞了你的作品 <span style="color: #999">YYYY-MM-DD</span></span>
+        <span
+          >点赞了你的《{{ item.workName }}》作品
+          <span style="color: #999">{{
+            dayjs(item.likeDate).format("YYYY-MM-DD HH:mm:ss")
+          }}</span></span
+        >
       </div>
       <!-- <span></span> -->
     </el-card>
@@ -11,7 +16,38 @@
 </template>
 
 <script setup>
-import {} from "vue";
+import { onMounted, ref, reactive, watch } from "vue";
+import { ElMessage } from "element-plus";
+import dayjs from "dayjs";
+import { reqGetLikeByAuthorId } from "@/api/like";
+import useUserStore from "@/store/modules/user";
+import { useRouter, useRoute } from "vue-router";
+const userStore = useUserStore();
+const likeData = reactive({});
+// 组件挂载完毕
+onMounted(() => {
+  getLike();
+});
+
+// 获取作品评论信息
+const getLike = async () => {
+  let authorId = userStore.userInfo.id;
+  try {
+    if (authorId) {
+      const res = await reqGetLikeByAuthorId(authorId);
+      console.log("authorIdLikeres", res);
+      if (res.code === "200") {
+        Object.assign(likeData, res.data);
+        console.log("likeData", likeData);
+      }
+    }
+  } catch (error) {
+    ElMessage({
+      type: "error",
+      message: error.message,
+    });
+  }
+};
 </script>
 
 <style scoped>

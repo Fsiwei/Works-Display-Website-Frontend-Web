@@ -7,45 +7,87 @@
     <!-- 底部展示作品的结构 -->
     <div class="works">
       <!-- 图片区 -->
-      <ImageArea />
+      <ImageArea :worksData="imageWork" />
       <!-- 视频区 -->
-      <VideoArea />
+      <VideoArea :worksData="videoWork" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { ElMessage } from "element-plus";
 // 引入首页轮播图组件
 import Carousel from "./carousel/test.vue";
 // 引入首页搜索作品组件
-import Search from "../../components/search/index.vue";
-// 引入首页图片作品组件
-import ImageArea from "./imageArea/index.vue";
-// 引入首页视频作品组件
-import VideoArea from "./videoArea/index.vue";
+import Search from "/src/components/search/index.vue";
+// 引入图片作品组件
+import ImageArea from "/src/components/imageArea/index.vue";
+// 引入视频作品组件
+import VideoArea from "/src/components/videoArea/index.vue";
 // 引入小仓库
-import useWorkStroe from "../../store/modules/test";
+import useWorkStroe from "/src/store/modules/test";
+import { reqGetWorkByFileType } from "@/api/work";
 // 获取仓库对象
 let detailStore = useWorkStroe();
 // 组件挂载完毕：通知 pinia 仓库发请求获取作品详情的数据，存储在仓库中
+
+const imageWork = reactive({});
+const videoWork = reactive({});
 onMounted(() => {
-  // 获取轮播图作品数据
-  detailStore.getBannerList();
-  // 获取图片作品数据
-  detailStore.getImageWorkInfo();
-  // 获取视频作品数据
-  detailStore.getVideoWorkInfo();
+  // 组件一挂载就调用获取作品的方法
+  getImageWork();
+  getVideoWork();
 });
+
+const getImageWork = async () => {
+  const fileType = "image";
+  try {
+    const res = await reqGetWorkByFileType(fileType);
+    if (res.code === "200") {
+      console.log("res.data", res.data);
+      Object.assign(imageWork, res.data.slice(0, 5));
+      console.log("imageWork", imageWork);
+    }
+  } catch (error) {
+    ElMessage({
+      type: "error",
+      message: error.message,
+    });
+  }
+};
+
+const getVideoWork = async () => {
+  const fileType = "video";
+  try {
+    const res = await reqGetWorkByFileType(fileType);
+    if (res.code === "200") {
+      Object.assign(videoWork, res.data.slice(0, 5));
+      console.log("videoWork", videoWork);
+    }
+  } catch (error) {
+    ElMessage({
+      type: "error",
+      message: error.message,
+    });
+  }
+};
 </script>
 
 <style scoped>
+@font-face {
+  font-family: SIMYOU;
+  font-weight: 700;
+  src: url(../../assets/fonts/SIMYOU.TTF) format("truetype");
+  text-rendering: optimizeLegibility;
+}
+
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 0 20px;
+  padding: 0 0 40px;
   background: #fff;
   background-image: url(../../assets/images/grid.svg);
   background-repeat: repeat;

@@ -76,13 +76,13 @@ const useUserStore = defineStore("User", {
      // 登录请求
      let result = await reqUserLogin(loginData);
      console.log("result", result);
-      if (result.code == 200) {
+      if (result.code === "200") {
         this.userInfo = result.data;
         console.log("this.userInfo", this.userInfo);
         // 本地存储持久化存储用户数据
         SET_TOKEN(JSON.stringify(this.userInfo));
         // 返回成功的 Promise
-        return "ok";
+        return result;
       } else {
         return Promise.reject(new Error(result.message));
       }
@@ -91,10 +91,10 @@ const useUserStore = defineStore("User", {
     async userRegister(registerData) {
       // 注册请求
       let result = await reqUserRegister(registerData);
-      if (result.code == 200) {
+      if (result.code === "200") {
         this.userInfo = result.data;
         SET_TOKEN(JSON.stringify(this.userInfo));
-        return "ok";
+        return result;
       } else {
         return Promise.reject(new Error(result.message));
       }

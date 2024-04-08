@@ -37,6 +37,6 @@ app.use(pinia);
 // 挂载全局对象
 app.config.globalProperties.$axios = axios; // ？
 // app.config.globalProperties.$http = axios; // ？
-
+import "./permisstion";
 // 挂载点在 index.html 静态页面中
 app.mount("#app");

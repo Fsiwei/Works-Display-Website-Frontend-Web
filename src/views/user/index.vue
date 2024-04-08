@@ -11,9 +11,9 @@
           <div class="top">
             <div class="userInfo">
               <div class="userImg">
-                <img src="../../assets/images/user.png" alt="" />
+                <img :src="userStore.userInfo.avatar" alt="" />
               </div>
-              <span>作者名称xxxxxxxxx</span>
+              <span>{{ userStore.userInfo.username }}</span>
             </div>
             <div class="menu">
               <ul ref="menuItemUl">
@@ -69,6 +69,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import useUserStore from "@/store/modules/user";
+const userStore = useUserStore();
 let $router = useRouter();
 let $route = useRoute();
 let menuItemUl = ref();
@@ -155,6 +157,7 @@ const changeActive = (path) => {
   font-family: SIMYOU, Arial, sans-serif;
   /* background-color: rgb(70, 130, 180); */
   background-color: #8abcd1;
+  background-color: #70c3f4;
   background-color: rgb(68, 68, 68, 0.9);
 }
 

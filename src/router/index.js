@@ -11,6 +11,7 @@ export default createRouter({
     {
       // 路由的路径
       path: "/home",
+      name: "Home",
       // 标明使用的是哪个组件，此处使用的是路由懒加载的方式
       component: () => import("@/views/home/index.vue"),
       meta: {
@@ -20,26 +21,31 @@ export default createRouter({
     // 第二个路由，登录/注册
     {
       path: "/login",
+      name: "Login",
       component: () => import("@/views/login/index.vue"),
     },
     // 第三个路由，搜索
     {
       path: "/search",
+      name: "Search",
       component: () => import("@/views/search/index.vue"),
     },
     // 第四个路由，上传
     {
       path: "/upload",
+      name: "Upload",
       component: () => import("@/views/upload/index.vue"),
     },
     // 第五个路由，个人中心
     {
       path: "/user",
+      name: "UserInfo",
       component: () => import("@/views/user/index.vue"),
       // 配置子路由
       children: [
         {
           path: "works",
+          name: "UserInfoWork",
           component: () => import("@/views/user/works/index.vue"),
           meta: {
             title: "我的作品",
@@ -47,6 +53,7 @@ export default createRouter({
         },
         {
           path: "message",
+          name: "UserInfoMessage",
           component: () => import("@/views/user/message/index.vue"),
           meta: {
             title: "我的消息",
@@ -55,20 +62,24 @@ export default createRouter({
           children: [
             {
               path: "comment",
+              name: "UserInfoComment",
               component: () => import("@/views/user/message/comment/index.vue"),
             },
             {
               path: "like",
+              name: "UserInfoLike",
               component: () => import("@/views/user/message/like/index.vue"),
             },
             {
               path: "notice",
+              name: "UserInfoNotice",
               component: () => import("@/views/user/message/notice/index.vue"),
             },
           ],
         },
         {
           path: "information",
+          name: "Information",
           component: () => import("@/views/user/information/index.vue"),
           meta: {
             title: "个人信息",
@@ -76,6 +87,7 @@ export default createRouter({
         },
         {
           path: "setting",
+          name: "Setting",
           component: () => import("@/views/user/setting/index.vue"),
           meta: {
             title: "设置",
@@ -86,12 +98,13 @@ export default createRouter({
     // 第六个路由，作品详情
     {
       path: "/workDetail",
+      name: "WorkDetail",
       component: () => import("@/views/workDetail/index.vue"),
     },
     // 当访问到根时，立即重定向到 home 首页
     {
       path: "/",
-      redirect: "/home",
+      redirect: "/login",
     },
   ],
   // 滚动行为：控制滚动条的位置

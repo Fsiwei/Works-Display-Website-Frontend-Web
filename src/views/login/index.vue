@@ -60,6 +60,7 @@
             <el-input
               class="form_input"
               placeholder="请输入密码"
+              type="password"
               v-model="registerParams.password"
             />
           </el-form-item>
@@ -67,6 +68,7 @@
             <el-input
               class="form_input"
               placeholder="请输入确认密码"
+              type="password"
               v-model="registerParams.confirmPassword"
             />
           </el-form-item>
@@ -140,6 +142,7 @@
             <el-input
               class="form_input"
               placeholder="请输入密码"
+              type="password"
               v-model="loginParams.password"
             />
           </el-form-item>
@@ -204,13 +207,12 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import { useRouter, useRoute } from "vue-router";
 import useUserStore from "@/store/modules/user";
 // 引入验证码组件
 import ValidCode from "../../components/validcode/index.vue";
-import axios from "axios";
 let $router = useRouter();
 let $route = useRoute();
 // 控制两个场景的响应式数据，登陆场景为 0
@@ -239,6 +241,11 @@ let registerParams = reactive({
   confirmPassword: "",
 });
 
+onMounted(() => {
+  // 通知 pinia 小仓库清除用户相关的信息，还要清空本地存储的用户信息
+  userStore.loginOut();
+});
+
 // 点击登录按钮回调
 const login = async () => {
   // 保证表单校验两项都符合条件，通过后发送请求，返回一个 Promise？
@@ -248,16 +255,30 @@ const login = async () => {
   // 登录请求失败：弹出对应登录失败的错误信息
   // 调用小仓库中定义的方法，并传递 username 和 password
   try {
-    console.log(loginParams);
     // 用户登录成功
     let res = await userStore.userLogin(loginParams);
-    console.log("res", res);
-    // 跳转路由
-    let redirect = $route.query.redirect;
-    if (redirect) {
-      $router.push(redirect);
+    console.log("登录的数据", res);
+    if (res.code === "200") {
+      // 跳转路由
+      let redirect = $route.query.redirect;
+      if (redirect) {
+        $router.push(redirect);
+        ElMessage({
+          type: "success",
+          message: "登录成功",
+        });
+      } else {
+        $router.push("/home");
+        ElMessage({
+          type: "success",
+          message: "登录成功",
+        });
+      }
     } else {
-      $router.push("/home");
+      ElMessage({
+        type: "error",
+        message: res.message,
+      });
     }
   } catch (error) {
     ElMessage({
@@ -279,8 +300,18 @@ const register = async () => {
     console.log(registerParams);
     // 用户登录成功
     let res = await userStore.userRegister(registerParams);
-    console.log("res", res);
-    scene.value = 0
+    if (res.code === "200") {
+      scene.value = 0;
+      ElMessage({
+        type: "success",
+        message: "注册成功，请登录",
+      });
+    } else {
+      ElMessage({
+        type: "error",
+        message: res.message,
+      });
+    }
   } catch (error) {
     ElMessage({
       type: "error",

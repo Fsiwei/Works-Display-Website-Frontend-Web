@@ -1,17 +1,15 @@
 <template>
-  <dvi class="search">
-    <el-autocomplete
-      @select="goDetail"
+  <div class="search">
+    <el-input
       ref="inputElement"
-      @keydown.enter="blurInput"
+      style="width: 600px"
+      @keydown.enter="search"
       :trigger-on-focus="false"
-      clearable
       placeholder="请输入搜索内容"
       class="form"
       v-model="keyword"
-      :fetch-suggestions="fetchData"
     />
-    <el-button type="primary" color="#333" size="default">
+    <el-button type="primary" color="#333" size="default" @click="search">
       <svg
         t="1697730068855"
         class="icon"
@@ -29,48 +27,57 @@
         ></path>
       </svg>
     </el-button>
-  </dvi>
+  </div>
 </template>
 
-<script>
-/* import { ref } from "vue";
+<script setup>
+import { ref } from "vue";
 // 引入请求方法
-import {reqWorksInfo} from "@/api/home";
+// import { reqWorksInfo } from "@/api/home";
 // 引入路由器
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import eventBus from "@/utils/eventBus";
 // 创建路由器对象
+let $route = useRoute();
 let $router = useRouter();
+let $emit = defineEmits(["getKeyword"]);
 // 收集搜索的关键字（）
 let keyword = ref("");
-const fetchData = async (keyword, cb) => {
-  // 当用户输入完关键词后函数会执行一次，然后发起请求获取需要展示的数据
-  let result = await reqWorksByKeyword(keyword);
-  if (result.code == 200) {
-    // 整理数据，使获得的数据格式符合第三方库提供的组件所需的数据格式
-    let showData = result.data.map((item) => {
-      // 第三方库组件展示的数据是一个对象
-      return {
-        value: item.workname, // 展示作品名称
-        wordcode: item.wordcode, // 存储作品编码为后续点击跳转路由做准备
-      };
-    });
-    // 通过 cb 回调函数，给组件提供展示的数据
-    cb(showData);
-  }
+const search = () => {
+  eventBus.emit("kw", keyword.value);
+  // console.log("kwww", keyword.value);
+  $router.push({ path: "/search" });
+  // $router.push({ path: "/search", query: { keyword: keyword.value } });
 };
-// 点击某个推荐项，然后跳转路由
-const goDetail = (item) => {
-  // 路由跳转，跳转到作品详情页，并携带 query 参数
-  $router.push({ path: "/works/detail", query: { workcode: item.workcode } });
-}; */
-export default {
-  methods: {
-    blurInput() {
-      this.$refs.inputElement.blur();
-      console.log("123456");
-    },
-  },
-};
+// const fetchData = async (keyword, cb) => {
+//   // 当用户输入完关键词后函数会执行一次，然后发起请求获取需要展示的数据
+//   let result = await reqWorksByKeyword(keyword);
+//   if (result.code == 200) {
+//     // 整理数据，使获得的数据格式符合第三方库提供的组件所需的数据格式
+//     let showData = result.data.map((item) => {
+//       // 第三方库组件展示的数据是一个对象
+//       return {
+//         value: item.workname, // 展示作品名称
+//         wordcode: item.wordcode, // 存储作品编码为后续点击跳转路由做准备
+//       };
+//     });
+//     // 通过 cb 回调函数，给组件提供展示的数据
+//     cb(showData);
+//   }
+// };
+// // 点击某个推荐项，然后跳转路由
+// const goDetail = (item) => {
+//   // 路由跳转，跳转到作品详情页，并携带 query 参数
+//   $router.push({ path: "/works/detail", query: { workcode: item.workcode } });
+// };
+// export default {
+//   methods: {
+//     blurInput() {
+//       this.$refs.inputElement.blur();
+//       console.log("123456");
+//     },
+//   },
+// };
 </script>
 
 <!-- <script>
@@ -88,12 +95,13 @@ export default {
   align-items: center;
   margin: 10px 0;
 }
+
 .search::v-deep(.el-input__wrapper) {
-  width: 600px;
   height: 50px;
   margin-right: 10px;
   border-radius: 50px;
 }
+
 .search::v-deep(.el-button) {
   width: 50px;
   height: 50px;
