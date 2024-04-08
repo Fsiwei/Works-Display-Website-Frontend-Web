@@ -101,6 +101,24 @@ export default createRouter({
       name: "WorkDetail",
       component: () => import("@/views/workDetail/index.vue"),
     },
+    // 第七个路由，用户管理
+    {
+      path: "/userManage",
+      name: "UserManage",
+      component: () => import("@/views/userManage/index.vue"),
+    },
+    // 第八个路由，作品列表
+    {
+      path: "/workList",
+      name: "WorkList",
+      component: () => import("@/views/workList/index.vue"),
+    },
+    // 第九个路由，作品审核
+    {
+      path: "/review",
+      name: "ReviewWork",
+      component: () => import("@/views/reviewWork/index.vue"),
+    },
     // 当访问到根时，立即重定向到 home 首页
     {
       path: "/",

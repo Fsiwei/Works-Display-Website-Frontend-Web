@@ -21,16 +21,30 @@
                   >搜索</a
                 >
               </li>
-              <li class="scroll-to-section">
+              <!-- <li class="scroll-to-section">
                 <a
                   href="/workDetail"
                   :class="{ active: $route.path == '/workDetail' }"
                   >作品</a
                 >
-              </li>
+              </li> -->
               <li class="scroll-to-section">
                 <a href="/upload" :class="{ active: $route.path == '/upload' }"
                   >上传</a
+                >
+              </li>
+              <li class="scroll-to-section">
+                <a
+                  href="/workList"
+                  :class="{ active: $route.path == '/workList' }"
+                  >审核</a
+                >
+              </li>
+              <li class="scroll-to-section">
+                <a
+                  href="/userManage"
+                  :class="{ active: $route.path == '/userManage' }"
+                  >用户管理</a
                 >
               </li>
               <li class="scroll-to-section">

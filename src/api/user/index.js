@@ -17,6 +17,16 @@ export const reqUserRegister = (data) => {
   return res;
 };
 
+// 通过用户ID和文件类型获取作品的接口
+export const reqGetAllUserPage = (pageNum, pageSize) => {
+  const params = {
+    pn: pageNum,
+    ps: pageSize,
+  };
+  const res = request.get("/user/selectAllUserPage", { params });
+  return res;
+};
+
 // export const reqUserRegister = (username, password, confirmPassword) => {
 //   request.post(`/user/login/${username}/${password}/${confirmPassword}`);
 // };
