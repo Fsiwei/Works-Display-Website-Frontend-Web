@@ -58,3 +58,25 @@ export const reqGetWorkByWorkId = (workId) => {
   const res = request.get("/work/getWorkByWorkId", { params });
   return res;
 };
+
+// 通过用户ID和文件类型获取作品的接口
+export const reqGetAllWorkPage = (pageNum, pageSize) => {
+  const params = {
+    pn: pageNum,
+    ps: pageSize,
+  };
+  const res = request.get("/work/selectAllWorkPage", { params });
+  return res;
+};
+
+// 通过用户ID和文件类型获取作品的接口
+export const reqGetAllWorkPageT = (pageNum, pageSize, keyword) => {
+  const params = {
+    pn: pageNum,
+    ps: pageSize,
+    keyword: keyword,
+    fileType: fileType,
+  };
+  const res = request.get("/work/selectWorkByKeywordPage", { params });
+  return res;
+};
