@@ -239,6 +239,8 @@ let registerParams = reactive({
   password: "",
   // 确认密码
   confirmPassword: "",
+  // 是否启用
+  isActive: 1,
 });
 
 onMounted(() => {
@@ -288,7 +290,7 @@ const login = async () => {
   }
 };
 
-// 点击登录按钮回调
+// 点击注册按钮回调
 const register = async () => {
   // 保证表单校验两项都符合条件，通过后发送请求，返回一个 Promise？
   await registerForm.value.validate();
@@ -298,7 +300,6 @@ const register = async () => {
   // 调用小仓库中定义的方法，并传递 username 和 password
   try {
     console.log(registerParams);
-    // 用户登录成功
     let res = await userStore.userRegister(registerParams);
     if (res.code === "200") {
       scene.value = 0;

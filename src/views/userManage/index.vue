@@ -50,8 +50,21 @@
               inline-prompt
               active-text="启用"
               inactive-text="禁用"
-              @change="isActive(scope.row.id, !scope.row.isActive)"
+              @change="changeActive(scope.row.id, !scope.row.isActive)"
             />
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="100">
+        <template #default="scope">
+          <div style="display: flex; align-items: center">
+            <!-- <span style="margin-left: 10px">{{ scope.row.email }}</span> -->
+            <!--@click="dialogTableVisible = true"-->
+            <el-button
+              size="small"
+              @click="handleReview(scope.$index, scope.row)"
+              >查看记录</el-button
+            >
           </div>
         </template>
       </el-table-column>
@@ -66,6 +79,17 @@
       @prev-click="prev"
       @next-click="next"
     />
+    <el-dialog
+      v-model="dialogTableVisible"
+      title="Shipping address"
+      width="800"
+    >
+      <el-table :data="gridData">
+        <el-table-column property="date" label="Date" width="150" />
+        <el-table-column property="name" label="Name" width="200" />
+        <el-table-column property="address" label="Address" />
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 

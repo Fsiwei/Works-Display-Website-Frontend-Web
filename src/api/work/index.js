@@ -80,3 +80,9 @@ export const reqGetAllWorkPageT = (pageNum, pageSize, keyword) => {
   const res = request.get("/work/selectWorkByKeywordPage", { params });
   return res;
 };
+
+// 提交审核信息
+export const reqReviewWork = (data) => {
+  const res = request.post("/work/submitReviewWork", data);
+  return res;
+};

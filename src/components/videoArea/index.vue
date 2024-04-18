@@ -41,11 +41,19 @@
             <p>{{ item.workName }}</p>
           </div>
           <div class="bottom">
-            <div class="user">
+            <div class="user" v-if="!isTag">
               <div class="userImg">
                 <img :src="item.avatar" alt="" />
               </div>
               <span>{{ item.username }}</span>
+            </div>
+            <div class="statusTag" v-else>
+              <el-tag
+                :type="item.status=='已发布' ? 'success': item.status=='驳回' ? 'danger' : 'primary'"
+                effect="dark"
+              >
+                {{ item.status }}
+              </el-tag>
             </div>
             <time class="time">{{
               dayjs(item.uploadDate).format("YYYY-MM-DD")
@@ -72,11 +80,13 @@ const props = defineProps(["worksData"]);
 console.log("props", props.worksData);
 let cardClassName = ref("card"); // 默认样式的 className
 let isShow = ref(true);
+let isTag = ref(false);
 
 // 监听路由变化，在特定的路由名时切换 className
 watchEffect(() => {
   if ($route.name === "UserInfoWork") {
     cardClassName.value = "card card-userinfo-work"; // 切换为特殊样式的 className
+    isTag.value = true;
   } else if ($route.name === "Search") {
     cardClassName.value = "card card-search-work"; // 切换为特殊样式的 className
   } else {

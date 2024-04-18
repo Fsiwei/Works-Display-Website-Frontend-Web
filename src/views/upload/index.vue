@@ -108,6 +108,7 @@ const workParams = reactive({
   uploadDate: null,
   fileType: null,
   workUrls: null,
+  status: null,
 });
 let user = reactive({});
 user = JSON.parse(GET_TOKEN() || "{}");
@@ -192,6 +193,7 @@ const saveWork = async () => {
   //   "YYYY-MM-DD HH:mm:ss"
   // );
   workParams.workType = workParams.typeArray.join(",");
+  workParams.status = '待审核',
   console.log("workParams", workParams);
   try {
     // 表单上传操作

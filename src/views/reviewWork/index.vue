@@ -61,8 +61,8 @@
             <div class="scene scene-one">
               <div class="review-state">
                 <el-radio-group v-model="reviewParams.state">
-                  <el-radio value="RELEASE" border>通过</el-radio>
-                  <el-radio value="REJECT" border>驳回</el-radio>
+                  <el-radio value="已发布" border>通过</el-radio>
+                  <el-radio value="驳回" border>驳回</el-radio>
                 </el-radio-group>
               </div>
               <div class="review-content">
@@ -73,6 +73,7 @@
                   :trigger-on-focus="false"
                   placeholder="填写审核信息"
                   v-model="reviewParams.content"
+                  v-if="reviewParams.state === '驳回'"
                 />
                 <el-popconfirm title="确定提交？" @confirm="submit">
                   <template #reference>
@@ -98,8 +99,8 @@
 import { onMounted, ref, reactive, watch } from "vue";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
-import { reqGetWorkByWorkId } from "@/api/work";
-import { reqReviewWork } from "@/api/review";
+import { reqGetWorkByWorkId, reqReviewWork } from "@/api/work";
+// import { reqReviewWork } from "@/api/review";
 // 引入作品详情仓库的数据
 import useUserStore from "@/store/modules/user";
 import { useRouter, useRoute } from "vue-router";
@@ -115,7 +116,7 @@ const reviewParams = reactive({
   adminId: null,
   workId: null,
   workName: null,
-  state: null,
+  state: "已发布",
   reviewDescribe: null,
   reviewDate: null,
 });
@@ -169,12 +170,11 @@ const getWorkType = (workType) => {
 };
 
 const submit = async () => {
+  reviewParams.workId = workData.workId;
   reviewParams.authorId = workData.userId;
   reviewParams.username = workData.username;
-  reviewParams.adminId = userStore.userInfo.id;
-  reviewParams.workId = workData.workId;
   reviewParams.workName = workData.workName;
-  reviewParams.description.trim();
+  reviewParams.content.trim();
   reviewParams.reviewDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
   try {
     let res = await reqReviewWork(reviewParams);

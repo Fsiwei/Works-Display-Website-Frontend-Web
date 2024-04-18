@@ -53,7 +53,9 @@
     </el-table-column>
     <el-table-column label="操作">
       <template #default="scope">
-        <el-button size="small" @click="handleReview(scope.$index, scope.row)"
+        <el-button
+          size="small"
+          @click="handleReview(scope.row.workId, scope.row.fileType)"
           >审核</el-button
         >
         <el-button
@@ -83,6 +85,8 @@ import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
 import { useRouter, useRoute } from "vue-router";
 import { reqGetAllWorkPage } from "@/api/work";
+let $router = useRouter();
+let $route = useRoute();
 const tableData = reactive([]);
 let currentPage = ref(1);
 let pageSize = ref(20);
@@ -118,8 +122,8 @@ const filterTag = (value, row) => {
   return row.tag === value;
 };
 
-const handleReview = (index, row) => {
-  console.log(index, row);
+const handleReview = (id, fileType) => {
+  $router.push({ path: "/review", query: { workId: id, type: fileType } });
 };
 const handleReject = (index, row) => {
   console.log(index, row);
